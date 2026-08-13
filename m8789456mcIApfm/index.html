@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área de Membros</title>
+    <meta name="description" content="Área de membros exclusiva com aulas em vídeo.">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="banner">
+        <div class="banner-content">
+            <img src="banner.webp" alt="Banner Área de Membros" class="banner-image">
+            <div class="banner-overlay"></div>
+            <div class="banner-course-title">
+                <span class="banner-label"><i class="fa-solid fa-graduation-cap"></i> Área de membros</span>
+                <h1>Mini curso de <span class="title-highlight">IA</span> para <span class="title-highlight">professores</span> do fundamental menor</h1>
+                <p>Aprenda a usar inteligência artificial para transformar suas aulas.</p>
+            </div>
+            <p class="compact-course-title">IA para Professores</p>
+        </div>
+    </header>
+
+    <main class="content-area">
+        <div class="timeline">
+            <div class="timeline-line"></div>
+            <section class="timeline-item" aria-labelledby="course-title">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content module-card">
+                    <div class="lesson-list" data-video-lessons>
+                        <article class="lesson" data-video-id="qLUZzoJEXCo">
+                            <button class="lesson-trigger" type="button" aria-expanded="false">
+                                <span class="lesson-number">01</span><span class="lesson-title">Introdução</span><span class="lesson-action"><i class="fa-solid fa-play"></i><span>Assistir</span></span><i class="fa-solid fa-chevron-down lesson-chevron"></i>
+                            </button>
+                            <div class="lesson-panel" hidden><div class="video-container"></div></div>
+                        </article>
+                        <article class="lesson" data-video-id="f3WrvFZ7WIg">
+                            <button class="lesson-trigger" type="button" aria-expanded="false">
+                                <span class="lesson-number">02</span><span class="lesson-title">Compreendendo o ChatGPT</span><span class="lesson-action"><i class="fa-solid fa-play"></i><span>Assistir</span></span><i class="fa-solid fa-chevron-down lesson-chevron"></i>
+                            </button>
+                            <div class="lesson-panel" hidden><div class="video-container"></div></div>
+                        </article>
+                        <article class="lesson" data-video-id="fV4elBJexwg">
+                            <button class="lesson-trigger" type="button" aria-expanded="false">
+                                <span class="lesson-number">03</span><span class="lesson-title">Compreendendo e Criando Prompts</span><span class="lesson-action"><i class="fa-solid fa-play"></i><span>Assistir</span></span><i class="fa-solid fa-chevron-down lesson-chevron"></i>
+                            </button>
+                            <div class="lesson-panel" hidden><div class="video-container"></div></div>
+                        </article>
+                        <article class="lesson" data-video-id="g5GNjkk5A2M">
+                            <button class="lesson-trigger" type="button" aria-expanded="false">
+                                <span class="lesson-number">04</span><span class="lesson-title">Gerando Atividades com ChatGPT</span><span class="lesson-action"><i class="fa-solid fa-play"></i><span>Assistir</span></span><i class="fa-solid fa-chevron-down lesson-chevron"></i>
+                            </button>
+                            <div class="lesson-panel" hidden><div class="video-container"></div></div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer><p>Feito com ❤️ Blacknous</p></footer>
+
+    <script>
+        const lessons = document.querySelectorAll('.lesson');
+        const enterFocusMode = () => document.body.classList.add('focus-mode');
+        function closeLesson(lesson) {
+            lesson.classList.remove('is-open');
+            const trigger = lesson.querySelector('.lesson-trigger');
+            const panel = lesson.querySelector('.lesson-panel');
+            trigger.setAttribute('aria-expanded', 'false');
+            panel.hidden = true;
+            panel.querySelector('.video-container').replaceChildren();
+        }
+        function openLesson(lesson, autoplay = true) {
+            lessons.forEach(item => { if (item !== lesson) closeLesson(item); });
+            lesson.classList.add('is-open');
+            const trigger = lesson.querySelector('.lesson-trigger');
+            const panel = lesson.querySelector('.lesson-panel');
+            trigger.setAttribute('aria-expanded', 'true');
+            panel.hidden = false;
+            const frame = document.createElement('iframe');
+            frame.src = `https://www.youtube.com/embed/${lesson.dataset.videoId}?autoplay=${autoplay ? 1 : 0}&rel=0`;
+            frame.title = lesson.querySelector('.lesson-title').textContent;
+            frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+            frame.allowFullscreen = true;
+            panel.querySelector('.video-container').replaceChildren(frame);
+        }
+        lessons.forEach(lesson => lesson.querySelector('.lesson-trigger').addEventListener('click', () => {
+            enterFocusMode();
+            if (!lesson.classList.contains('is-open')) openLesson(lesson);
+        }));
+        window.addEventListener('blur', () => {
+            window.setTimeout(() => {
+                if (document.activeElement?.tagName === 'IFRAME') enterFocusMode();
+            }, 0);
+        });
+        openLesson(lessons[0], false);
+    </script>
+</body>
+</html>
